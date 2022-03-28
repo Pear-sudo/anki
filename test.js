@@ -202,7 +202,6 @@ function clockStyleBreathe() {
                 }, time);
 
                 abortSignal.addEventListener('abort', () => {
-                    // alert("abort event caught");
                     clearTimeout(timeout);
                     reject(new Error(""));
                 })
@@ -219,34 +218,15 @@ function clockStyleBreathe() {
     }
 
     async function startTransLooper() {
-        // if (abortController) {
-        //     alert("duplicated controller find")
-        // }
         if (!abortController) {
             abortController = new AbortController();
-            // logger(" set ")
         }
-        // if (abortController) {
-        // alert("set controller");
-        // }
         try {
             await transLooperTerminable(abortController.signal);
-            // alert("await is over");
             await startTransLooper();
         } catch {
             abortController = null;
             ifTerminated = true
-            // alert("terminated");
-            // let b
-            // if (abortController) {
-            //     b = "find";
-            // } else if (abortController == null) {
-            //     b = "null";
-            // } else {
-            //     b = "undefined";
-            // }
-            // logger("t-" + b + "\n");
-            // console.log("catch")
         }
     }
 
@@ -278,11 +258,8 @@ function clockStyleBreathe() {
 }
 
 function terminator() {
-    // alert("before if abortController test");
     if (abortController) {
-        // alert("abortion commend fired");
         abortController.abort();
-        // logger("set to null by terminator");
     }
 }
 
@@ -314,10 +291,7 @@ function ifCovered() {
 }
 
 function checker() {
-    // logger("checker");
-    // terminator();
     if (ifCovered()) {
-        // logger(" breathe ");
         clockStyleBreathe();
     } else {
         terminator();
