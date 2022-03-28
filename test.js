@@ -155,9 +155,10 @@ function directChildString(element) {
     return element.childNodes[0].nodeValue
 }
 
+var abortController = null;
+var ifTerminated = true;
 terminator();
 checker();
-var abortController = null;
 
 function clockStyleBreathe() {
 
@@ -233,6 +234,8 @@ function clockStyleBreathe() {
             // alert("await is over");
             await startTransLooper();
         } catch {
+            abortController = null;
+            ifTerminated = true
             // alert("terminated");
             // let b
             // if (abortController) {
@@ -243,18 +246,35 @@ function clockStyleBreathe() {
             //     b = "undefined";
             // }
             // logger("t-" + b + "\n");
-        } finally {
-            // alert("set to null");
-            if (abortController) {
-                abortController = null;
-                // logger("set to null by finally");
-            }
+            // console.log("catch")
         }
     }
 
     dimClock();
     terminator();
-    startTransLooper();
+
+    /*
+        The following Promise is necessary because terminator() takes time to call catch {}, and thus abortController = null
+        is also delayed; if at this very time there is another call to clockStyleBreathe(), an uncontrollable transLooperTerminable(abortController)
+        will be created as the abortController passed to the function is the controller of the old one which is no longer valid.
+        Note abortController = new AbortController() will not be executed if abortController is not set to null.
+
+        The racing bug:
+        when move the clock to text and then another text and finally to white space by scroll.
+        is thus solved.
+    */
+    new Promise(resolve => {
+        function check() {
+            if (ifTerminated) {
+                resolve();
+            }
+        }
+
+        setInterval(check, 10);
+    }).then(() => {
+        startTransLooper();
+        ifTerminated = false;
+    })
 }
 
 function terminator() {
@@ -262,7 +282,6 @@ function terminator() {
     if (abortController) {
         // alert("abortion commend fired");
         abortController.abort();
-        abortController = null; // this may be completed before "catch" section in
         // logger("set to null by terminator");
     }
 }
@@ -335,5 +354,3 @@ function dimClock(duration = 1) {
     clock.style.background = "rgba(0, 0, 0, 0.5)";
     clock.style.color = "rgba(23, 212, 254, 0.5)";
 }
-
-//TODO please fixed the racing bug: when move the clock to text and then another text and finally to white space by scroll bar, the code will broke;
