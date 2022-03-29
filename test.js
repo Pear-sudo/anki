@@ -157,8 +157,6 @@ function directChildString(element) {
 
 var abortController = null;
 var ifTerminated = true;
-terminator();
-checker();
 
 function clockStyleBreathe() {
 
@@ -263,7 +261,7 @@ function terminator() {
     }
 }
 
-function ifCovered() {
+function ifCovered() { //TODO optimise this function.
     var rect = clock.getBoundingClientRect();
 
     var top = rect.top;
@@ -306,7 +304,16 @@ function scrollStop() {
     isScrolling = setTimeout(checker, 100);
 }
 
-window.addEventListener("scroll", scrollStop)
+window.addEventListener("scroll", scrollStop);
+
+/*
+It is important to put the following two statements after the event listener. Because anki will scroll the page down
+to <hr id=answer>. If they are put before the listener, if there is breath effect is activated (there is text) before
+the scroll and there is no text after the scroll, the clock will mistakenly keep on breathe since there is no listener and
+the checker is not called again to update the state.
+*/
+terminator();
+checker();
 
 function mouserOverClock() {
     terminator();
