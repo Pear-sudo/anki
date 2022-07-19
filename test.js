@@ -335,3 +335,140 @@ function dimClock(duration = 1) {
     clock.style.background = "rgba(0, 0, 0, 0.5)";
     clock.style.color = "rgba(23, 212, 254, 0.5)";
 }
+
+function findExampleSentences() {
+    return document.querySelectorAll(".examples > li")
+}
+
+function findHighlights() {
+    return document.querySelectorAll("span[style*=\"background-color\"]")
+}
+
+function getRandomInt(max, min = 0) {
+    min = Math.ceil(min);
+    max = Math.floor(max) + 1;
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
+
+function randomSelect(list, size = 1) {
+    return list[getRandomInt(list.length - 1)]
+}
+
+function isScrollbarVisible(element) {
+    return element.scrollHeight > element.clientHeight;
+}
+
+// random example sentences
+var exampleSentences = findExampleSentences()
+if (exampleSentences.length > 0) {
+    randomExampleSentence = randomSelect(findExampleSentences())
+    randomExampleSentence.style.background = "#f28482"
+    randomExampleSentence.style.borderRadius = "8px"
+    randomExampleSentence.style.textShadow = "none"
+    randomExampleSentence.style.color = "black"
+
+    if (isScrollbarVisible(document.documentElement)) {
+        jumpToExampleButton = document.createElement("div")
+        jumpToExampleButton.style.display = "inline-block"
+        jumpToExampleButton.style.borderRadius = "100%"
+        jumpToExampleButton.style.cursor = "pointer"
+        jumpToExampleButton.style.padding = "0.6rem"
+        jumpToExampleButton.style.backgroundColor = "#f28482"
+        jumpToExampleButton.style.position = "fixed"
+        jumpToExampleButton.style.right = "5px"
+        jumpToExampleButton.style.top = "10%"
+
+        var position = randomExampleSentence.getBoundingClientRect()
+        if (randomExampleSentence.querySelectorAll("img").length > 0) {
+            if (position.top < 0) {
+                setTimeout(() => {
+                    randomExampleSentence.scrollIntoView({block: "start", inline: "nearest", behavior: "smooth"})
+                }, 100)
+            }
+
+            jumpToExampleButton.addEventListener("click", () => {
+                randomExampleSentence.scrollIntoView({block: "start", inline: "nearest", behavior: "smooth"})
+            })
+        } else {
+            if (position.top < 0 || position.bottom > window.innerHeight) {
+                setTimeout(() => {
+                    randomExampleSentence.scrollIntoView({block: "center", inline: "nearest", behavior: "smooth"})
+                }, 100)
+            }
+
+            jumpToExampleButton.addEventListener("click", () => {
+                randomExampleSentence.scrollIntoView({block: "center", inline: "nearest", behavior: "smooth"})
+            })
+        }
+
+        mybutton.parentNode.insertBefore(jumpToExampleButton, mybutton)
+    }
+}
+
+// navigator
+if (isScrollbarVisible(document.documentElement)) {
+    highLights = findHighlights()
+    if (highLights.length > 1) {
+        var index = 0
+
+        navigatorButton = document.createElement("div")
+        navigatorButton.style.position = "fixed"
+        navigatorButton.style.left = "5px"
+        navigatorButton.style.bottom = "50%"
+        navigatorButton.style.display = "flex"
+        navigatorButton.style.flexDirection = "column"
+
+        upArrow = document.createElement("div")
+        upArrow.style.backgroundColor = "rgb(255, 170, 0)"
+        upArrow.style.borderRadius = "100%"
+        upArrow.style.display = "inline-block"
+        upArrow.style.cursor = "pointer"
+        upArrow.style.marginBottom = "3px"
+        upArrow.style.padding = "0.6rem"
+
+        upArrow.addEventListener("click", () => {
+            highLights[index].scrollIntoView({block: "center", inline: "nearest", behavior: "smooth"})
+            index--
+            if (index < 0) {
+                index = highLights.length - 1
+            }
+        })
+
+        downArrow = document.createElement("div")
+        downArrow.style.backgroundColor = "rgb(255, 170, 0)"
+        downArrow.style.borderRadius = "100%"
+        downArrow.style.display = "inline-block"
+        downArrow.style.cursor = "pointer"
+        downArrow.style.padding = "0.6rem"
+
+        downArrow.addEventListener("click", () => {
+            highLights[index].scrollIntoView({block: "center", inline: "nearest", behavior: "smooth"})
+            index++
+            if (index > highLights.length - 1) {
+                index = 0
+            }
+        })
+
+        navigatorButton.insertBefore(upArrow, null)
+        navigatorButton.insertBefore(downArrow, null)
+        mybutton.parentNode.insertBefore(navigatorButton, mybutton)
+    } else if (highLights.length === 1) {
+        navigatorButton = document.createElement("div")
+
+        navigatorButton.style.display = "inline-block"
+        navigatorButton.style.position = "fixed"
+        navigatorButton.style.left = "5px"
+        navigatorButton.style.bottom = "50%"
+        navigatorButton.style.cursor = "pointer"
+        navigatorButton.style.padding = "0.6rem"
+
+        navigatorButton.style.backgroundColor = "rgb(255, 170, 0)"
+        navigatorButton.style.borderRadius = "100%"
+
+        navigatorButton.addEventListener("click", () => {
+            highLights[0].scrollIntoView({block: "center", inline: "nearest"})
+        })
+
+        mybutton.parentNode.insertBefore(navigatorButton, mybutton)
+    }
+}
