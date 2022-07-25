@@ -362,6 +362,9 @@ function isScrollbarVisible(element) {
 var exampleSentences = findExampleSentences()
 if (exampleSentences.length > 0) {
     randomExampleSentence = randomSelect(findExampleSentences())
+    randomExampleSentence.style.boxDecorationBreak = "clone"
+    randomExampleSentence.style.webkitBoxDecorationBreak = "clone"
+    randomExampleSentence.style.lineHeight = "1.2"
     randomExampleSentence.style.background = "#f28482"
     randomExampleSentence.style.borderRadius = "8px"
     randomExampleSentence.style.textShadow = "none"
