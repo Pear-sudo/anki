@@ -8,6 +8,8 @@ Though some code were just pushed to this repository they were actually written 
 
 Since they were written years ago I don't think they can represent my current programming skill. So, dear admission officers, please do have a look at my most recent project first: [A time manager](https://github.com/Pear-sudo/time)
 
+Check the [demon webpage](https://pear-sudo.github.io/anki/) using this UI (it's just a sample, since Anki's qt web is a bit different)
+
 # How to use these code
 
 1. You need to buy [Oulu Dictionary (欧陆字典)](https://dict.eudic.net/) and export your favorite Oxford dictionary words. See sample_export.html.
