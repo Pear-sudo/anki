@@ -1,0 +1,44 @@
+<div class='headline'>
+<h1 style='font-size: 23px ' id='word'>{{word}}</h1>
+<div style='font-family: Arial; font-size: 14px;'>{{phonetic}}</div>
+<div id="clock" onmouseover="mouserOverClock()" onmouseout="mouserOutClock()"></div>
+</div>
+
+
+<script>
+var originTime = new Date();
+
+// if you use var, time will be cleared when card is flipped; if you use const or let, the time will persist. BTW?
+
+function showTime() {
+    var currentTime = new Date();
+    var distance = currentTime - originTime;
+
+//var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+//var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    var milliseconds = Math.floor((distance % 1000) / 10);
+
+    function addZeroString(num, compensation = 2) {
+        var multiplier = compensation - num.toString().length;
+        return "0".repeat(multiplier) + num;
+    }
+
+    minutes = addZeroString(minutes);
+    seconds = addZeroString(seconds);
+    milliseconds = addZeroString(milliseconds);
+
+    if (minutes === "00") {
+        var timeString = seconds + "." + milliseconds.slice(0,1);
+    } else {
+        var timeString = minutes + ":" + seconds + "." + milliseconds.slice(0,1);
+    }
+
+    document.getElementById("clock").innerText = timeString;
+}
+
+if (typeof timerID === 'undefined') {
+	timerID = setInterval(showTime, 50);
+}
+</script>
