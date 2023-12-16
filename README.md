@@ -23,3 +23,7 @@ That's it, cheers!
 <script></script> 
 ```
 part of each template, sorry, I shouldn't put so many lines of code into one file, I was very young and naive when I wrote this...)
+
+# Copyrights
+
+This project is for University of Pennsylvania's Master in Computer and Information Technology ❤️ and Northeastern University's Align Master in Computer science ❤️. Before being admitted to either of the two programmes, I would reserve all rights to my code. I'll opensource it after being admitted to one of them, or unfortunately, if I am rejected by both, as my first contribution to the opensource community.
